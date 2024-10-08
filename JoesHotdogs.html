@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joe's Hotdog Stand - Order Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 2;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #FFF;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #orderSummary {
+            margin-top: 20px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Joe's Hotdog Stand</h1>
+        <div id="orderSummary"></div>
+    </div>
+    <script>
+        // Constant price variables
+        const hotdogPrice = 4.80;  
+        const friesPrice = 3.95;
+        const drinkPrice = 1.99;
+
+        // prompt user for amount 
+        numDogs = parseInt(prompt("How many hotdogs would you like?"));
+        numFries = parseInt(prompt("How many fries would you like?"));
+        numSoda = parseInt(prompt("How many drinks would you like?"));
+
+        // round money properly  
+        function showMoney(amount) {
+            return (Math.round(amount * 100) / 100);
+        }
+
+        // round money properly 
+        function showMoney(amount) {
+            let roundedAmount = Math.round(amount * 100) / 100;
+            let wholePart = Math.floor(roundedAmount);
+            let decimalPart = Math.round((roundedAmount - wholePart) * 100);
+            let decimalString = String(decimalPart).padStart(2, '0');
+            return wholePart + "." + decimalString;
+        }
+
+        // calculate subtotal 
+        subtotal = (numDogs * hotdogPrice) + (numFries * friesPrice) + (numSoda * drinkPrice);
+
+        // Apply discount if applicable
+        discount = 0;
+        if (subtotal >= 25) {
+            discount = subtotal * 0.1;
+            subtotal -= discount;
+        }
+
+        // Add tax
+        tax = subtotal * 0.0625;
+        total = subtotal + tax;
+
+        // Display order summary
+        let orderSummary = document.getElementById('orderSummary');
+        orderSummary.innerHTML = `
+            <div class="item"><span>Hotdogs (${numDogs}):</span> <span>$${showMoney(numDogs * hotdogPrice)}</span></div>
+            <div class="item"><span>Fries (${numFries}):</span> <span>$${showMoney(numFries * friesPrice)}</span></div>
+            <div class="item"><span>Drinks (${numSoda}):</span> <span>$${showMoney(numSoda * drinkPrice)}</span></div>
+            <div class="item"><span>Subtotal before discount:</span> <span>$${showMoney(subtotal + discount)}</span></div>
+            ${discount > 0 ? `<div class="item"><span>Discount:</span> <span>$${showMoney(discount)}</span></div>` : ''}
+            <div class="item"><span>Subtotal after discount:</span> <span>$${showMoney(subtotal)}</span></div>
+            <div class="item"><span>Tax (6.25%):</span> <span>$${showMoney(tax)}</span></div>
+            <div class="item total"><span>Total:</span> <span>$${showMoney(total)}</span></div>
+        `;
+    </script>
+</body>
+</html>
